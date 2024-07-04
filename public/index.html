@@ -18,6 +18,7 @@
 
 <style>
 html, body {
+    font-family: "Hind Madurai", sans-serif;
     min-height: 100vh;
 }
 body {
@@ -28,161 +29,168 @@ body {
     min-height: 100vh;
     margin: 0;
 }
-  .section {
+.section {
     font-family: "Hind Madurai", sans-serif;
-      padding: 40px 0;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .title {
-      font-family: "Hind Madurai", sans-serif;
-      color: #f8f8f2;
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-    }
-
-    .notification {
-      font-family: "Hind Madurai", sans-serif;
-      border-radius: 8px;
-      font-size: 1.1rem;
-      padding: 15px;
-      margin: 10px 0;
-      position: relative;
-      transition: opacity 0.3s ease;
-    }
-
+    padding: 40px 0;
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.title {
+    font-family: "Hind Madurai", sans-serif;
+    color: #f8f8f2;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+.notification {
+    font-family: "Hind Madurai", sans-serif;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    padding: 15px;
+    margin: 10px 0;
+    position: relative;
+    transition: opacity 0.3s ease;
+}
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffeaa7;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 90%;
+    max-width: 600px;
+    z-index: 1000;
+    display: none;
+}
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.popup-header h2 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+.popup .delete {
+    font-size: 1.5rem;
+    color: #2d3436;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+.notification.is-primary {
+    font-family: "Hind Madurai", sans-serif;
+    background-color: #48c774;
+    color: #fff;
+}
+.notification.is-warning {
+    font-family: "Hind Madurai", sans-serif;
+    background-color: #ffdd57;
+    color: #fff;
+}
+.notification.is-danger {
+    font-family: "Hind Madurai", sans-serif;
+    background-color: #ff3860;
+    color: #fff;
+}
+/* Responsive Design */
+@media (max-width: 768px) {
     .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #ffeaa7;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      padding: 20px;
-      width: 90%;
-      max-width: 600px;
-      z-index: 1000;
-      display: none;
-    }
-
-    .popup-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .popup-header h2 {
-      font-size: 1.5rem;
-      margin: 0;
-    }
-
-    .popup .delete {
-      font-size: 1.5rem;
-      color: #2d3436;
-      cursor: pointer;
-      border: none;
-      background: none;
-    }
-
-    .notification.is-primary {
-      font-family: "Hind Madurai", sans-serif;
-      background-color: #48c774;
-      color: #fff;
-    }
-
-    .notification.is-warning {
-      font-family: "Hind Madurai", sans-serif;
-      background-color: #ffdd57;
-      color: #fff;
-    }
-
-    .notification.is-danger {
-      font-family: "Hind Madurai", sans-serif;
-      background-color: #ff3860;
-      color: #fff;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .popup {
         width: 95%;
         max-width: none;
-      }
-
-      .title {
+    }
+    .title {
         font-size: 2rem;
-      }
-
-      .notification {
+    }
+    .notification {
         font-size: 1rem;
         padding: 10px;
-      }
     }
-
- </style>
+}
+</style>
 
 </head>
 <body>
 
-  <section class="section">
+<section class="section">
     <div class="container">
-      <h1 class="title has-text-centered">Webhook Server</h1>
-      <div id="messages"></div>
+        <h1 class="title has-text-centered">Webhook Server</h1>
+        <div id="messages"></div>
     </div>
-  </section>
+</section>
 
-  <!-- Popup Modal -->
-  <div id="popup" class="popup">
+<div id="popup" class="popup">
     <div class="popup-header">
-      <h2 class="popup-title">Notification</h2>
-      <button class="button is-small is-link" onclick="closePopup()">x</button>
+        <h2 class="popup-title">Notification</h2>
+        <button class="button is-small is-link" onclick="closePopup()">x</button>
     </div>
     <div id="popup-content"></div>
-  </div>
+</div>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    showPopup("Welcome! Waiting for messages...");
+
     const socket = new WebSocket(`wss://${location.host}/ws`);
 
     socket.addEventListener("message", (event) => {
-      const data = JSON.parse(event.data);
+        try {
+            const data = JSON.parse(event.data);
+            
+            if (typeof data.type !== 'string') {
+                console.error("Invalid message format:", event.data);
+                return;
+            }
 
-      if (data.type === "reload") {
-        showPopup("Page Request to Reload");
-        setTimeout(() => {
-           location.reload();
-        }, 3000);
-      } else if (data.type === "message") {
-        showPopup(data.data);
-      }
+            switch (data.type) {
+                case "reload":
+                    showPopup("Page Request to Reload");
+                    setTimeout(() => {
+                        location.reload();
+                    }, 3000);
+                    break;
+                case "message":
+                    if (typeof data.data === 'string') {
+                        showPopup(data.data);
+                    } else {
+                        console.error("Invalid message format:", event.data);
+                    }
+                    break;
+                default:
+                    console.error("Unknown message type:", data.type);
+            }
+        } catch (error) {
+            console.error("Error processing message:", error);
+        }
     });
+});
 
-    function showPopup(message) {
-      const popup = document.getElementById('popup');
-      const popupContent = document.getElementById('popup-content');
+function showPopup(message) {
+    const popup = document.getElementById('popup');
+    const popupContent = document.getElementById('popup-content');
 
-      popupContent.innerHTML = `
+    popupContent.innerHTML = `
         <div class="notification is-primary">
-          ${message}
+            ${message}
         </div>
-      `;
-      popup.style.display = 'block';
+    `;
+    popup.style.display = 'block';
 
-      // Automatically close popup after 5 seconds
-      setTimeout(() => {
+    setTimeout(() => {
         closePopup();
-      }, 5000);
-    }
+    }, 5000);
+}
 
-    function closePopup() {
-      const popup = document.getElementById('popup');
-      popup.style.display = 'none';
-    }
-  </script>
+function closePopup() {
+    const popup = document.getElementById('popup');
+    popup.style.display = 'none';
+}
+</script>
 
 </body>
 </html>
