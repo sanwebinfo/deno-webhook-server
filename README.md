@@ -80,6 +80,8 @@ Description: Establish a WebSocket connection to receive real-time updates and m
 ## Example curl Commands
 
 ```sh
+
+## Send Message
 curl -X POST http://localhost:8000/send-message \
      -H "Authorization: Bearer your_secret_api_key" \
      -H "Content-Type: application/json" \
@@ -87,6 +89,8 @@ curl -X POST http://localhost:8000/send-message \
 ```
 
 ```sh
+
+## Reload page
 curl -X GET http://localhost:8000/reload \
      -H "Authorization: Bearer your_secret_api_key"
 ```
