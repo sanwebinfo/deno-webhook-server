@@ -1,0 +1,11 @@
+{
+  "tasks": {
+    "start": "deno run --allow-net --allow-read --allow-write server.ts"
+  },
+  "fmt": {
+    "include": ["server.ts", "public/index.html"]
+  },
+  "lint": {
+    "include": ["server.ts"]
+  }
+}
