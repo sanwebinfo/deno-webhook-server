@@ -2,8 +2,7 @@ import { config } from "https://deno.land/x/dotenv@v3.2.2/mod.ts";
 import { serveFile } from "https://deno.land/std@0.224.0/http/file_server.ts";
 import { ensureDir } from "https://deno.land/std@0.224.0/fs/ensure_dir.ts";
 
-// Load environment variables from .env file
-const { AUTH_KEY } = config();
+const AUTH_KEY = config()['AUTH_KEY'];
 if (!AUTH_KEY) {
   throw new Error("AUTH_KEY is not set in the environment");
 }
