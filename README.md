@@ -39,7 +39,7 @@ deno cache server.ts
 
 ```sh
 
-deno run --allow-net --allow-read --allow-env server.ts
+deno run --allow-net --allow-env --allow-read --allow-write server.ts
 
 or
 
@@ -105,6 +105,10 @@ curl -X GET http://localhost:8000/messages
 ## Static Page
 
 - open `http://localhost:8000` on Browser and check the WebSocket Activities
+
+## Hosting
+
+- Deno Deploy: <https://deno.com/deploy>
 
 ## LICENSE
 
