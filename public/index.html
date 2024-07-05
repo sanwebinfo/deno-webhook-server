@@ -114,7 +114,7 @@
             font-family: "Catamaran", sans-serif;
             font-weight: 600;
             font-size: 1.5rem;
-            color: #f8c291;
+            color: #e6ff6e;
             margin: 0;
         }
 
@@ -127,22 +127,34 @@
         }
 
         .notification {
-            font-family: "Catamaran", sans-serif;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            padding: 15px;
-            margin: 10px 0;
-            position: relative;
-            transition: opacity 0.3s ease;
-            background-color: #44475a;
-            color: #f8f8f2;
+           font-family: "Catamaran", sans-serif;
+           border-radius: 8px;
+           font-size: 1.1rem;
+           padding: 30px 30px 50px;
+           margin: 10px 0;
+           position: relative;
+           transition: opacity 0.3s ease;
+           background-color: #44475a;
+           color: #f8f8f2;
+           text-align: center;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           height: auto;
         }
 
         .notification.is-primary {
             font-family: "Catamaran", sans-serif;
             font-weight: 600;
-            background-color: #e84118;
-            color: #fffa65;
+            white-space: pre-line;
+            background-color: #6e304b;
+            color: #fffc7f;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
+            hyphens: auto;
+            line-height: 1.8;
+            flex-grow: 1;
         }
 
         .notification.is-warning {
@@ -166,6 +178,8 @@
             }
 
             .title {
+                font-family: "Catamaran", sans-serif;
+                font-weight: 700;
                 font-size: 2rem;
             }
 
@@ -174,8 +188,10 @@
             }
 
             .notification {
+                font-family: "Catamaran", sans-serif;
+                font-weight: 600;
                 font-size: 1rem;
-                padding: 10px;
+                padding: 50px 50px 65px;
             }
         }
     </style>
@@ -185,15 +201,15 @@
 
     <section class="section">
         <div class="container">
-            <h1 class="title">Webhook Server</h1>
+            <h1 class="title">Webhook Server 🐞</h1>
             
             <div class="card">
                 <div class="card-header">
-                    <h2>Deno Server</h2>
+                    <h2>Deno Server 🦕</h2>
                 </div>
                 <div class="card-content">
                     <p>
-                        Deno Webhook Server is a real-time server application built using Deno.<br>It supports WebSocket connections for real-time updates.<br>it includes endpoints for triggering reloads and retrieving messages.
+                        🔵 Deno Webhook Server is a real-time server application built using Deno.<br>🔵 It supports WebSocket connections for real-time updates.<br>🔵 Also it includes endpoints for triggering reloads and retrieving messages.
                     </p>
                 </div>
             </div>
@@ -204,7 +220,7 @@
     <div id="popup-overlay" class="popup-overlay"></div>
     <div id="popup" class="popup">
         <div class="popup-header">
-            <h2 class="popup-title">Notification</h2>
+            <h2 class="popup-title">Notification 📳</h2>
             <button class="delete" onclick="closePopup()"></button>
         </div>
         <div id="popup-content"></div>
