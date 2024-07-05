@@ -136,7 +136,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     showPopup("Welcome! Waiting for messages...");
 
-    const socket = new WebSocket(`wss://${location.host}/ws`);
+    const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
+    const socket = new WebSocket(`${protocol}${location.host}/ws`);
 
     socket.addEventListener("message", (event) => {
         try {
