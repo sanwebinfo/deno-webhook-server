@@ -1,196 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="HandheldFriendly" content="True" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="shortcut icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABqklEQVQ4jZ2Tv0scURDHP7P7SGWh14mkuXJZEH8cgqUWcklAsLBbCEEJSprkD7hD/4BUISHEkMBBiivs5LhCwRQBuWgQji2vT7NeYeF7GxwLd7nl4knMwMDMfL8z876P94TMLt+8D0U0EggQSsAjwMvga8ChJAqxqjTG3m53AQTg4tXHDRH9ABj+zf6oytbEu5d78nvzcyiivx7QXBwy46XOi5z1jbM+Be+nqVfP8yzuD3FM6rzIs9YE1hqGvDf15cVunmdx7w5eYJw1pcGptC9CD4gBUuef5Ujq/BhAlTLIeFYuyfmTZgeYv+2nPt1a371P+Hm1WUPYydKf0lnePwVmh3hnlcO1uc7yvgJUDtdG8oy98kduK2KjeHI0fzCQINSXOk/vlXBUOaihAwnGWd8V5r1uhe1VIK52V6JW2D4FqHZX5lphuwEE7ooyaN7gjLMmKSwYL+pMnV+MA/6+g8RYa2Lg2RBQbj4+rll7uymLy3coiuXb5PdQVf7rKYvojAB8Lf3YUJUHfSYR3XqeLO5JXvk0dhKqSqQQoCO+s5AIxCLa2Lxc6ALcAPwS26XFskWbAAAAAElFTkSuQmCC" />
 
-<title>Webhook Server</title>
-<meta name="description" content="Deno Webhook Server is a real-time server application built using Deno."/>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABqklEQVQ4jZ2Tv0scURDHP7P7SGWh14mkuXJZEH8cgqUWcklAsLBbCEEJSprkD7hD/4BUISHEkMBBiivs5LhCwRQBuWgQji2vT7NeYeF7GxwLd7nl4knMwMDMfL8z876P94TMLt+8D0U0EggQSsAjwMvga8ChJAqxqjTG3m53AQTg4tXHDRH9ABj+zf6oytbEu5d78nvzcyiivx7QXBwy46XOi5z1jbM+Be+nqVfP8yzuD3FM6rzIs9YE1hqGvDf15cVunmdx7w5eYJw1pcGptC9CD4gBUuef5Ujq/BhAlTLIeFYuyfmTZgeYv+2nPt1a371P+Hm1WUPYydKf0lnePwVmh3hnlcO1uc7yvgJUDtdG8oy98kduK2KjeHI0fzCQINSXOk/vlXBUOaihAwnGWd8V5r1uhe1VIK52V6JW2D4FqHZX5lphuwEE7ooyaN7gjLMmKSwYL+pMnV+MA/6+g8RYa2Lg2RBQbj4+rll7uymLy3coiuXb5PdQVf7rKYvojAB8Lf3YUJUHfSYR3XqeLO5JXvk0dhKqSqQQoCO+s5AIxCLa2Lxc6ALcAPwS26XFskWbAAAAAElFTkSuQmCC" />
 
-<link rel="preconnect" href="https://cdnjs.cloudflare.com">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css" integrity="sha512-IgmDkwzs96t4SrChW29No3NXBIBv8baW490zk5aXvhCD8vuZM3yUSkbyTBcXohkySecyzIrUwiF/qV0cuPcL3Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Webhook Server</title>
+    <meta name="description" content="Deno Webhook Server is a real-time server application built using Deno."/>
 
-<style>
-html, body {
-    font-family: "Hind Madurai", sans-serif;
-    min-height: 100vh;
-}
-body {
-    background-color: #282a36;
-    color: var(--text-color);
-    font-family: "Hind Madurai", sans-serif;
-    font-weight: 600;
-    min-height: 100vh;
-    margin: 0;
-}
-.section {
-    font-family: "Hind Madurai", sans-serif;
-    padding: 40px 0;
-}
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-}
-.title {
-    font-family: "Hind Madurai", sans-serif;
-    color: #f8f8f2;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-}
-.notification {
-    font-family: "Hind Madurai", sans-serif;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    padding: 15px;
-    margin: 10px 0;
-    position: relative;
-    transition: opacity 0.3s ease;
-}
-.popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #ffeaa7;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    width: 90%;
-    max-width: 600px;
-    z-index: 1000;
-    display: none;
-}
-.popup-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.popup-header h2 {
-    font-size: 1.5rem;
-    margin: 0;
-}
-.popup .delete {
-    font-size: 1.5rem;
-    color: #2d3436;
-    cursor: pointer;
-    border: none;
-    background: none;
-}
-.notification.is-primary {
-    font-family: "Hind Madurai", sans-serif;
-    background-color: #48c774;
-    color: #fff;
-}
-.notification.is-warning {
-    font-family: "Hind Madurai", sans-serif;
-    background-color: #ffdd57;
-    color: #fff;
-}
-.notification.is-danger {
-    font-family: "Hind Madurai", sans-serif;
-    background-color: #ff3860;
-    color: #fff;
-}
-/* Responsive Design */
-@media (max-width: 768px) {
-    .popup {
-        width: 95%;
-        max-width: none;
-    }
-    .title {
-        font-size: 2rem;
-    }
-    .notification {
-        font-size: 1rem;
-        padding: 10px;
-    }
-}
-</style>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css" integrity="sha512-IgmDkwzs96t4SrChW29No3NXBIBv8baW490zk5aXvhCD8vuZM3yUSkbyTBcXohkySecyzIrUwiF/qV0cuPcL3Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100..900&display=swap" rel="stylesheet">
+
+    <style>
+        html, body {
+            font-family: "Catamaran", sans-serif;
+            font-weight: 600;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #282a36;
+            color: #f8f8f2;
+        }
+
+        .section {
+            padding: 40px 0;
+        }
+
+        .container {
+            font-family: "Catamaran", sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .title {
+            font-family: "Catamaran", sans-serif;
+            font-weight: 700;
+            color: #f8c291;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .card {
+            font-family: "Catamaran", sans-serif;
+            background: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            margin: 20px 0;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        .card-header {
+            border-bottom: 1px solid #44475a;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .card-header h2 {
+            font-family: "Catamaran", sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #D980FA; 
+            margin: 0;
+        }
+
+        .card-content {
+            font-family: "Catamaran", sans-serif;
+            color: #f7f1e3;
+            font-size: 1.1rem;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+            display: none;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .popup-header h2 {
+            font-family: "Catamaran", sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: #f8c291;
+            margin: 0;
+        }
+
+        .popup .delete {
+            font-size: 1.5rem;
+            color: #f8f8f2;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        .notification {
+            font-family: "Catamaran", sans-serif;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            padding: 15px;
+            margin: 10px 0;
+            position: relative;
+            transition: opacity 0.3s ease;
+            background-color: #44475a;
+            color: #f8f8f2;
+        }
+
+        .notification.is-primary {
+            font-family: "Catamaran", sans-serif;
+            font-weight: 600;
+            background-color: #e84118;
+            color: #fffa65;
+        }
+
+        .notification.is-warning {
+            font-family: "Catamaran", sans-serif;
+            font-weight: 600;
+            background-color: #f1fa8c;
+            color: #333;
+        }
+
+        .notification.is-danger {
+            font-family: "Catamaran", sans-serif;
+            font-weight: 600;
+            background-color: #ff5555;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .popup {
+                width: 95%;
+                max-width: none;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .card {
+                max-width: 95%;
+            }
+
+            .notification {
+                font-size: 1rem;
+                padding: 10px;
+            }
+        }
+    </style>
 
 </head>
 <body>
 
-<section class="section">
-    <div class="container">
-        <h1 class="title has-text-centered">Webhook Server</h1>
-        <div id="messages"></div>
-    </div>
-</section>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Webhook Server</h1>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2>Deno Server</h2>
+                </div>
+                <div class="card-content">
+                    <p>
+                        Deno Webhook Server is a real-time server application built using Deno.<br>It supports WebSocket connections for real-time updates.<br>it includes endpoints for triggering reloads and retrieving messages.
+                    </p>
+                </div>
+            </div>
+            <div id="messages"></div>
+        </div>
+    </section>
 
-<div id="popup" class="popup">
-    <div class="popup-header">
-        <h2 class="popup-title">Notification</h2>
-        <button class="button is-small is-link" onclick="closePopup()">x</button>
+    <div id="popup-overlay" class="popup-overlay"></div>
+    <div id="popup" class="popup">
+        <div class="popup-header">
+            <h2 class="popup-title">Notification</h2>
+            <button class="delete" onclick="closePopup()"></button>
+        </div>
+        <div id="popup-content"></div>
     </div>
-    <div id="popup-content"></div>
-</div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("DOMContentLoaded", () => {
+            showPopup("Welcome Waiting for messages...");
 
-    showPopup("Welcome! Waiting for messages...");
+            const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
+            const socket = new WebSocket(`${protocol}${location.host}/ws`);
 
-    const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
-    const socket = new WebSocket(`${protocol}${location.host}/ws`);
+            socket.addEventListener("message", (event) => {
+                try {
+                    const data = JSON.parse(event.data);
 
-    socket.addEventListener("message", (event) => {
-        try {
-            const data = JSON.parse(event.data);
-            
-            if (typeof data.type !== 'string') {
-                console.error("Invalid message format:", event.data);
-                return;
-            }
-
-            switch (data.type) {
-                case "reload":
-                    showPopup("Page Request to Reload");
-                    setTimeout(() => {
-                        location.reload();
-                    }, 3000);
-                    break;
-                case "message":
-                    if (typeof data.data === 'string') {
-                        showPopup(data.data);
-                    } else {
+                    if (typeof data.type !== 'string') {
                         console.error("Invalid message format:", event.data);
+                        return;
                     }
-                    break;
-                default:
-                    console.error("Unknown message type:", data.type);
-            }
-        } catch (error) {
-            console.error("Error processing message:", error);
+
+                    switch (data.type) {
+                        case "reload":
+                            showPopup("Page Request to Reload");
+                            setTimeout(() => {
+                                location.reload();
+                            }, 3000);
+                            break;
+                        case "message":
+                            if (typeof data.data === 'string') {
+                                showPopup(data.data);
+                            } else {
+                                console.error("Invalid message format:", event.data);
+                            }
+                            break;
+                        default:
+                            console.error("Unknown message type:", data.type);
+                    }
+                } catch (error) {
+                    console.error("Error processing message:", error);
+                }
+            });
+        });
+
+        function showPopup(message) {
+            const popup = document.getElementById('popup');
+            const popupOverlay = document.getElementById('popup-overlay');
+            const popupContent = document.getElementById('popup-content');
+
+            popupContent.innerHTML = `
+                <div class="notification is-primary">
+                    ${message}
+                </div>
+            `;
+            popup.style.display = 'block';
+            popupOverlay.style.display = 'block';
+
+            setTimeout(() => {
+                closePopup();
+            }, 5000);
         }
-    });
-});
 
-function showPopup(message) {
-    const popup = document.getElementById('popup');
-    const popupContent = document.getElementById('popup-content');
-
-    popupContent.innerHTML = `
-        <div class="notification is-primary">
-            ${message}
-        </div>
-    `;
-    popup.style.display = 'block';
-
-    setTimeout(() => {
-        closePopup();
-    }, 5000);
-}
-
-function closePopup() {
-    const popup = document.getElementById('popup');
-    popup.style.display = 'none';
-}
+        function closePopup() {
+            const popup = document.getElementById('popup');
+            const popupOverlay = document.getElementById('popup-overlay');
+            popup.style.display = 'none';
+            popupOverlay.style.display = 'none';
+        }
 </script>
 
 </body>
