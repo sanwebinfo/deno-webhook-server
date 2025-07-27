@@ -45,13 +45,7 @@ deno task start
 
 URL: `/ws`
 Method: WebSocket Upgrade
-Description: Establish a WebSocket connection to receive real-time updates and message
-
-### Reload Endpoint
-
-- URL: `/reload`
-- Method: GET
-- Description: Triggers a reload notification to all connected WebSocket clients.
+Description: Establish a WebSocket connection to receive real-time updates and message.  
 
 ### Send Message Endpoint
 
@@ -74,12 +68,6 @@ Description: Establish a WebSocket connection to receive real-time updates and m
 curl -X POST http://localhost:8000/send-message \
      -H "Content-Type: application/json" \
      -d '{"message": "Hello, WebSocket!"}'
-```
-
-```sh
-
-## Reload page
-curl -X GET http://localhost:8000/reload
 ```
 
 ```sh
