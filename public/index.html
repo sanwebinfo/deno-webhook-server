@@ -2,61 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABqklEQVQ4jZ2Tv0scURDHP7P7SGWh14mkuXJZEH8cgqUWcklAsLBbCEEJSprkD7hD/4BUISHEkMBBiivs5LhCwRQBuWgQji2vT7NeYeF7GxwLd7nl4knMwMDMfL8z876P94TMLt+8D0U0EggQSsAjwMvga8ChJAqxqjTG3m53AQTg4tXHDRH9ABj+zf6oytbEu5d78nvzcyiivx7QXBwy46XOi5z1jbM+Be+nqVfP8yzuD3FM6rzIs9YE1hqGvDf15cVunmdx7w5eYJw1pcGptC9CD4gBUuef5Ujq/BhAlTLIeFYuyfmTZgeYv+2nPt1a371P+Hm1WUPYydKf0lnePwVmh3hnlcO1uc7yvgJUDtdG8oy98kduK2KjeHI0fzCQINSXOk/vlXBUOaihAwnGWd8V5r1uhe1VIK52V6JW2D4FqHZX5lphuwEE7ooyaN7gjLMmKSwYL+pMnV+MA/6+g8RYa2Lg2RBQbj4+rll7uymLy3coiuXb5PdQVf7rKYvojAB8Lf3YUJUHfSYR3XqeLO5JXvk0dhKqSqQQoCO+s5AIxCLa2Lxc6ALcAPwS26XFskWbAAAAAElFTkSuQmCC" />
     <title>Deno WebSocket Server</title>
-    <meta name="description" content="Real-time messaging with Deno WebSocket Server">
+    <meta name="description" content="Real-time WebSocket Server Built Using Deno.">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Modern Color Scheme */
-            --primary: #4361ee;
-            --primary-dark: #3a0ca3;
-            --primary-light: #4895ef;
-            --secondary: #f72585;
-            --tertiary: #4cc9f0;
-            --background: #f8f9fa;
+            /* Vibrant Material Color Scheme */
+            --primary: #6200ee;
+            --primary-dark: #3700b3;
+            --primary-light: #bb86fc;
+            --secondary: #03dac6;
+            --secondary-dark: #018786;
+            --tertiary: #ff7597;
+            --background: #f5f5f5;
             --surface: #ffffff;
-            --error: #ef233c;
+            --error: #b00020;
             --success: #4caf50;
             --warning: #ff9800;
+            --info: #2196f3;
             --on-primary: #ffffff;
-            --on-secondary: #ffffff;
-            --on-background: #212529;
-            --on-surface: #212529;
+            --on-secondary: #000000;
+            --on-background: #212121;
+            --on-surface: #212121;
             --on-error: #ffffff;
             
-            /* Neutral Colors */
-            --gray-100: #f8f9fa;
-            --gray-200: #e9ecef;
-            --gray-300: #dee2e6;
-            --gray-400: #ced4da;
-            --gray-500: #adb5bd;
-            --gray-600: #6c757d;
-            --gray-700: #495057;
-            --gray-800: #343a40;
-            --gray-900: #212529;
+            /* Elevation shadows */
+            --elevation-0: 0 0 0 0 rgba(0,0,0,0);
+            --elevation-1: 0 2px 1px -1px rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 1px 3px 0 rgba(0,0,0,0.12);
+            --elevation-2: 0 3px 1px -2px rgba(0,0,0,0.2), 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+            --elevation-3: 0 4px 8px -4px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12);
+            --elevation-4: 0 6px 16px -6px rgba(0,0,0,0.2), 0 10px 14px 0 rgba(0,0,0,0.14), 0 2px 24px 0 rgba(0,0,0,0.12);
             
             /* Spacing */
+            --space-xxs: 0.125rem;
             --space-xs: 0.25rem;
             --space-sm: 0.5rem;
             --space-md: 1rem;
             --space-lg: 1.5rem;
             --space-xl: 2rem;
-            
-            /* Elevation */
-            --elevation-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-            --elevation-2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-            --elevation-3: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+            --space-xxl: 3rem;
             
             /* Border Radius */
             --radius-sm: 4px;
             --radius-md: 8px;
             --radius-lg: 12px;
+            --radius-xl: 16px;
             --radius-full: 999px;
             
             /* Transition */
-            --transition: all 0.2s ease-in-out;
+            --transition-fast: 0.1s ease-out;
+            --transition: 0.2s ease-out;
+            --transition-slow: 0.3s ease-out;
+            
+            /* Typography */
+            --font-heading: 'Open Sans', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
         }
         
         * {
@@ -66,24 +70,29 @@
         }
         
         body {
-            font-family: 'Open Sans', sans-serif;
+            font-family: var(--font-body);
             background-color: var(--background);
             color: var(--on-background);
             line-height: 1.6;
             min-height: 100vh;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: var(--space-md);
+            padding: var(--space-lg);
+            flex: 1;
+            width: 100%;
         }
         
         header {
             background-color: var(--primary);
             color: var(--on-primary);
             padding: var(--space-md) 0;
-            box-shadow: var(--elevation-1);
+            box-shadow: var(--elevation-2);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -93,17 +102,19 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 var(--space-md);
+            padding: 0 var(--space-lg);
         }
         
         .header-title {
             display: flex;
             align-items: center;
             gap: var(--space-sm);
-            font-weight: 600;
-            font-size: 1.25rem;
+            font-family: var(--font-heading);
+            font-weight: 500;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
         }
         
         .status {
@@ -114,12 +125,14 @@
             padding: var(--space-xs) var(--space-sm);
             border-radius: var(--radius-full);
             background-color: rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
         }
         
         .status-indicator {
             width: 0.75rem;
             height: 0.75rem;
             border-radius: var(--radius-full);
+            transition: var(--transition);
         }
         
         .status-connected {
@@ -137,52 +150,70 @@
         
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--space-md);
-            margin-top: var(--space-md);
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
         }
         
         .card {
             background-color: var(--surface);
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-lg);
             box-shadow: var(--elevation-1);
-            padding: var(--space-md);
+            padding: var(--space-lg);
             transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
         }
         
         .card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--elevation-2);
+            transform: translateY(-4px);
+            box-shadow: var(--elevation-3);
         }
         
         .card-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: var(--space-md);
-            color: var(--primary-dark);
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: var(--space-lg);
+            color: var(--primary);
             display: flex;
             align-items: center;
             gap: var(--space-sm);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
         }
         
         .input-group {
             margin-bottom: var(--space-md);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         .text-field {
             width: 100%;
-            padding: var(--space-sm) var(--space-md);
-            border: 1px solid var(--gray-300);
-            border-radius: var(--radius-sm);
+            padding: var(--space-md);
+            border: 1px solid var(--primary-light);
+            border-radius: var(--radius-md);
             font-size: 1rem;
-            font-family: 'Open Sans', sans-serif;
+            font-family: var(--font-body);
             transition: var(--transition);
+            resize: none;
+            flex: 1;
+            min-height: 120px;
+            background-color: rgba(98, 0, 238, 0.02);
         }
         
         .text-field:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+            box-shadow: 0 0 0 2px rgba(98, 0, 238, 0.2);
+            background-color: rgba(98, 0, 238, 0.05);
+        }
+        
+        .text-field::placeholder {
+            color: rgba(0,0,0,0.3);
         }
         
         .button-group {
@@ -192,34 +223,43 @@
         }
         
         .button {
-            font-family: 'Open Sans', sans-serif;
+            font-family: var(--font-body);
             background-color: var(--primary);
             color: var(--on-primary);
             border: none;
-            border-radius: var(--radius-full);
-            padding: var(--space-sm) var(--space-md);
-            font-size: 0.875rem;
+            border-radius: var(--radius-md);
+            padding: var(--space-md) var(--space-lg);
+            font-size: 0.9375rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: var(--space-sm);
             transition: var(--transition);
-            min-height: 40px;
+            min-height: 48px;
+            flex: 1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: var(--elevation-1);
         }
         
         .button:hover {
             background-color: var(--primary-dark);
-            box-shadow: var(--elevation-1);
+            box-shadow: var(--elevation-2);
+            transform: translateY(-1px);
         }
         
         .button:active {
-            transform: scale(0.98);
+            transform: translateY(0);
+            box-shadow: var(--elevation-1);
         }
         
         .button:disabled {
-            background-color: var(--gray-400);
+            background-color: rgba(0,0,0,0.12);
+            color: rgba(0,0,0,0.38);
             cursor: not-allowed;
+            box-shadow: none;
         }
         
         .button.secondary {
@@ -228,38 +268,20 @@
         }
         
         .button.secondary:hover {
-            background-color: #d91a6a;
+            background-color: var(--secondary-dark);
         }
         
         .button.tertiary {
             background-color: var(--tertiary);
-            color: var(--on-background);
+            color: var(--on-primary);
         }
         
         .button.tertiary:hover {
-            background-color: #3ab4d8;
-        }
-        
-        .button.warning {
-            background-color: var(--warning);
-            color: var(--on-surface);
-        }
-        
-        .button.warning:hover {
-            background-color: #e68a00;
-        }
-        
-        .button.danger {
-            background-color: var(--error);
-            color: var(--on-error);
-        }
-        
-        .button.danger:hover {
-            background-color: #d11a2a;
+            background-color: #e04b75;
         }
         
         .message-container {
-            height: 300px;
+            height: 100%;
             display: flex;
             flex-direction: column;
         }
@@ -267,48 +289,61 @@
         .message-list {
             flex: 1;
             overflow-y: auto;
-            border: 1px solid var(--gray-200);
-            border-radius: var(--radius-sm);
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: var(--radius-md);
             padding: var(--space-sm);
             background-color: var(--surface);
             display: flex;
-            flex-direction: column-reverse;
-        }
-        
-        .message-scroll-container {
-            display: flex;
             flex-direction: column;
+            gap: var(--space-sm);
+            min-height: 300px;
         }
         
         .message-item {
-            padding: var(--space-sm);
-            margin-bottom: var(--space-xs);
-            border-radius: var(--radius-sm);
-            background-color: var(--gray-100);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            background-color: rgba(98, 0, 238, 0.05);
             word-break: break-word;
             animation: fadeIn 0.3s ease-out;
-        }
-        
-        .message-item:last-child {
-            margin-bottom: 0;
+            border-left: 4px solid var(--primary-light);
         }
         
         .no-messages {
-            color: var(--gray-500);
+            color: rgba(0,0,0,0.38);
             text-align: center;
-            padding: var(--space-md);
+            padding: var(--space-lg);
             font-style: italic;
+            margin: auto;
+        }
+        
+        .message-meta {
+            font-size: 0.75rem;
+            color: rgba(0,0,0,0.6);
+            margin-top: var(--space-xs);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .message-counter {
+            font-size: 0.75rem;
+            color: rgba(0,0,0,0.6);
+            text-align: right;
+            margin-top: var(--space-xs);
+        }
+        
+        .message-counter.error {
+            color: var(--error);
         }
         
         .snackbar {
             position: fixed;
             bottom: var(--space-md);
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) translateY(20px);
             background-color: var(--gray-800);
             color: white;
-            padding: var(--space-sm) var(--space-md);
-            border-radius: var(--radius-sm);
+            padding: var(--space-md) var(--space-lg);
+            border-radius: var(--radius-md);
             box-shadow: var(--elevation-3);
             display: flex;
             align-items: center;
@@ -316,7 +351,7 @@
             z-index: 1000;
             opacity: 0;
             transition: var(--transition);
-            min-width: 300px;
+            min-width: 350px;
             max-width: 90%;
         }
         
@@ -342,9 +377,170 @@
             background-color: var(--error);
         }
         
+        .snackbar.info {
+            background-color: var(--info);
+        }
+        
+        /* Push notification styles */
+        .notification-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            max-width: 350px;
+            width: 100%;
+        }
+        
+        .notification {
+            background-color: var(--surface);
+            color: var(--on-surface);
+            border-radius: var(--radius-md);
+            box-shadow: var(--elevation-3);
+            padding: var(--space-md);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            transform: translateX(120%);
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            opacity: 0;
+            position: relative;
+            overflow: hidden;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .notification.hide {
+            transform: translateX(120%);
+            opacity: 0;
+        }
+        
+        .notification.success {
+            border-left-color: var(--success);
+        }
+        
+        .notification.error {
+            border-left-color: var(--error);
+        }
+        
+        .notification.warning {
+            border-left-color: var(--warning);
+        }
+        
+        .notification.info {
+            border-left-color: var(--info);
+        }
+        
+        .notification-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .notification-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+            font-size: 0.9375rem;
+        }
+        
+        .notification-message {
+            font-size: 0.875rem;
+            color: rgba(0,0,0,0.7);
+            word-break: break-word;
+        }
+        
+        .notification-close {
+            background: none;
+            border: none;
+            color: rgba(0,0,0,0.5);
+            cursor: pointer;
+            padding: var(--space-xs);
+            margin: calc(-1 * var(--space-xs));
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+        
+        .notification-close:hover {
+            color: rgba(0,0,0,0.8);
+        }
+        
+        .notification-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background-color: rgba(0,0,0,0.1);
+            width: 100%;
+        }
+        
+        .notification-progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 100%;
+            transform-origin: left;
+            transform: scaleX(1);
+            transition: transform linear;
+        }
+        
+        .notification.success .notification-progress-bar {
+            background-color: var(--success);
+        }
+        
+        .notification.error .notification-progress-bar {
+            background-color: var(--error);
+        }
+        
+        .notification.warning .notification-progress-bar {
+            background-color: var(--warning);
+        }
+        
+        .notification.info .notification-progress-bar {
+            background-color: var(--info);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.3);
+        }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 992px) {
+            .container {
+                padding: var(--space-md);
+            }
+            
+            .header-content {
+                padding: 0 var(--space-md);
+            }
         }
         
         @media (max-width: 768px) {
@@ -354,15 +550,58 @@
             
             .card-grid {
                 grid-template-columns: 1fr;
+                gap: var(--space-md);
+            }
+            
+            .card {
+                min-height: auto;
+                padding: var(--space-md);
             }
             
             .button {
-                flex: 1;
-                justify-content: center;
+                min-width: 100%;
             }
             
             .header-title {
+                font-size: 1.25rem;
+            }
+            
+            .text-field {
+                min-height: 100px;
+            }
+            
+            .notification-container {
+                top: 70px;
+                right: 10px;
+                max-width: calc(100% - 20px);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-title {
                 font-size: 1.125rem;
+            }
+            
+            .status {
+                font-size: 0.75rem;
+            }
+            
+            .card-title {
+                font-size: 1.125rem;
+            }
+            
+            .button {
+                padding: var(--space-sm) var(--space-md);
+                font-size: 0.875rem;
+            }
+            
+            .snackbar {
+                min-width: 280px;
+                padding: var(--space-sm) var(--space-md);
+            }
+            
+            .notification {
+                padding: var(--space-sm);
             }
         }
     </style>
@@ -371,8 +610,7 @@
     <header>
         <div class="header-content">
             <div class="header-title">
-                <span class="material-icons-round">dns</span>
-                Deno WebSocket Server
+                <span class="material-icons-round">forum</span>
             </div>
             <div id="connection-status" class="status">
                 <span class="status-indicator status-disconnected"></span>
@@ -380,6 +618,9 @@
             </div>
         </div>
     </header>
+    
+    <!-- Notification container -->
+    <div class="notification-container" id="notification-container"></div>
     
     <main class="container">
         <div class="card-grid">
@@ -389,47 +630,41 @@
                     Send Message
                 </h2>
                 <div class="input-group">
-                    <input type="text" id="message-input" class="text-field" 
-                           placeholder="Type your message (2-600 chars)" autocomplete="off">
+                    <textarea id="message-input" class="text-field" 
+                           placeholder="Type your message (2-600 characters)" 
+                           rows="5" autocomplete="off"></textarea>
+                    <div id="message-counter" class="message-counter">0/600</div>
                 </div>
                 <div class="button-group">
                     <button id="send-message-btn" class="button">
                         <span class="material-icons-round">send</span>
-                        Send via WS
+                        Send Message
                     </button>
-                    <button id="send-api-message-btn" class="button secondary">
-                        <span class="material-icons-round">api</span>
-                        Send via API
-                    </button>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h2 class="card-title">
-                    <span class="material-icons-round">build</span>
-                    Server Actions
-                </h2>
-                <div class="button-group">
-                    <button id="trigger-reload-btn" class="button warning">
-                        <span class="material-icons-round">refresh</span>
-                        Trigger Reload
-                    </button>
-                    <button id="get-messages-btn" class="button tertiary">
-                        <span class="material-icons-round">history</span>
-                        Get Messages
+                    <button id="clear-message-btn" class="button secondary">
+                        <span class="material-icons-round">clear</span>
+                        Clear
                     </button>
                 </div>
             </div>
             
             <div class="card message-container">
                 <h2 class="card-title">
-                    <span class="material-icons-round">chat</span>
+                    <span class="material-icons-round">history</span>
                     Message History
                 </h2>
                 <div id="message-list" class="message-list">
-                    <div class="message-scroll-container">
-                        <div class="no-messages">No messages yet</div>
-                    </div>
+                    <div class="no-messages">No messages yet. Send one to get started!</div>
+                </div>
+                <br />
+                <div class="button-group">
+                    <button id="refresh-messages-btn" class="button tertiary">
+                        <span class="material-icons-round">refresh</span>
+                        Refresh Messages
+                    </button>
+                    <button id="toggle-notifications-btn" class="button secondary">
+                        <span class="material-icons-round" id="notifications-icon">notifications</span>
+                        <span id="notifications-text">Enable Notifications</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -445,11 +680,23 @@
         let isConnected = false;
         let snackbarTimeout;
         let messageHistory = [];
+        let notificationsEnabled = false;
+        let notificationQueue = [];
+        let activeNotifications = 0;
+        const MAX_NOTIFICATIONS = 3;
+        const NOTIFICATION_TIMEOUT = 5000;
 
         document.addEventListener("DOMContentLoaded", () => {
             connectWebSocket();
             setupEventListeners();
             loadInitialMessages();
+            
+            // Load notification preference from localStorage
+            const savedPreference = localStorage.getItem('notificationsEnabled');
+            if (savedPreference !== null) {
+                notificationsEnabled = savedPreference === 'true';
+                updateNotificationButton();
+            }
         });
 
         function connectWebSocket() {
@@ -459,20 +706,20 @@
             socket.addEventListener("open", () => {
                 isConnected = true;
                 updateConnectionStatus(true);
-                showSnackbar("Connected to WebSocket server", "success");
+                showSnackbar("Connected to real-time server", "success", 3000);
             });
 
             socket.addEventListener("close", () => {
                 isConnected = false;
                 updateConnectionStatus(false);
-                showSnackbar("Disconnected from WebSocket server", "error");
+                showSnackbar("Disconnected from server. Reconnecting...", "warning", 3000);
                 // Attempt to reconnect after 5 seconds
                 setTimeout(connectWebSocket, 5000);
             });
 
             socket.addEventListener("error", (error) => {
                 console.error("WebSocket error:", error);
-                showSnackbar("WebSocket connection error", "error");
+                showSnackbar("Connection error. Trying to reconnect...", "error", 3000);
             });
 
             socket.addEventListener("message", (event) => {
@@ -488,31 +735,62 @@
 
         async function loadInitialMessages() {
             try {
+                showSnackbar("Loading messages...", "info", 2000);
                 const response = await fetch('/messages');
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.messages && data.messages.length > 0) {
-                        messageHistory = data.messages;
-                        renderMessages();
-                    }
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.messages && data.messages.length > 0) {
+                    messageHistory = data.messages;
+                    renderMessages();
+                    showSnackbar(`Loaded ${data.messages.length} messages`, "success", 2000);
+                } else {
+                    messageHistory = [];
+                    renderMessages();
+                    showSnackbar("No messages available", "info", 2000);
                 }
             } catch (error) {
                 console.error("Error loading initial messages:", error);
+                showSnackbar("Failed to load messages", "error");
             }
         }
 
         function setupEventListeners() {
-            document.getElementById('send-message-btn').addEventListener('click', sendMessageViaWebSocket);
-            document.getElementById('send-api-message-btn').addEventListener('click', sendMessageViaAPI);
-            document.getElementById('trigger-reload-btn').addEventListener('click', triggerReload);
-            document.getElementById('get-messages-btn').addEventListener('click', getMessages);
+            const messageInput = document.getElementById('message-input');
             
-            // Allow pressing Enter to send message
-            document.getElementById('message-input').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    sendMessageViaWebSocket();
+            // Main action buttons
+            document.getElementById('send-message-btn').addEventListener('click', sendMessage);
+            document.getElementById('clear-message-btn').addEventListener('click', clearMessageInput);
+            document.getElementById('refresh-messages-btn').addEventListener('click', loadInitialMessages);
+            document.getElementById('toggle-notifications-btn').addEventListener('click', toggleNotifications);
+            
+            // Character counter
+            messageInput.addEventListener('input', updateCharacterCounter);
+            
+            // Allow pressing Enter to send message (with Shift+Enter for new line)
+            messageInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
                 }
             });
+        }
+
+        function updateCharacterCounter() {
+            const messageInput = document.getElementById('message-input');
+            const counter = document.getElementById('message-counter');
+            const length = messageInput.value.length;
+            counter.textContent = `${length}/600`;
+            
+            if (length > 600) {
+                counter.classList.add('error');
+            } else {
+                counter.classList.remove('error');
+            }
         }
 
         function updateConnectionStatus(connected) {
@@ -538,16 +816,22 @@
             }
 
             switch (data.type) {
-                case "reload":
-                    showSnackbar("Reload requested. Refreshing in 3 seconds...", "warning");
-                    setTimeout(() => {
-                        location.reload();
-                    }, 3000);
-                    break;
                 case "message":
                     if (typeof data.data === 'string') {
                         addMessageToHistory(data.data);
-                        showSnackbar("New message received", "success");
+                        
+                        // Show notification if enabled
+                        if (notificationsEnabled) {
+                            showNotification("New Message", data.data, "info");
+                        }
+                        
+                        showSnackbar("New message received", "success", 2000);
+                    }
+                    break;
+                case "notification":
+                    if (typeof data.title === 'string' && typeof data.message === 'string') {
+                        const type = ["success", "error", "warning", "info"].includes(data.type) ? data.type : "info";
+                        showNotification(data.title, data.message, type);
                     }
                     break;
                 case "connection":
@@ -558,33 +842,143 @@
             }
         }
 
-        function sendMessageViaWebSocket() {
-            if (!isConnected) {
-                showSnackbar("Not connected to WebSocket", "error");
-                return;
-            }
+        function toggleNotifications() {
+            notificationsEnabled = !notificationsEnabled;
+            localStorage.setItem('notificationsEnabled', notificationsEnabled.toString());
+            updateNotificationButton();
+            
+            const message = notificationsEnabled 
+                ? "Notifications enabled. You'll receive push notifications for new messages." 
+                : "Notifications disabled. You won't receive push notifications.";
+            
+            showSnackbar(message, notificationsEnabled ? "success" : "info", 3000);
+        }
 
-            const messageInput = document.getElementById('message-input');
-            const message = messageInput.value.trim();
-
-            if (!validateMessage(message)) return;
-
-            try {
-                socket.send(JSON.stringify({
-                    type: "message",
-                    data: message,
-                    timestamp: new Date().toISOString()
-                }));
-                addMessageToHistory(message);
-                messageInput.value = '';
-                showSnackbar("Message sent via WebSocket", "success");
-            } catch (error) {
-                console.error("Error sending message:", error);
-                showSnackbar("Failed to send message", "error");
+        function updateNotificationButton() {
+            const icon = document.getElementById('notifications-icon');
+            const text = document.getElementById('notifications-text');
+            
+            if (notificationsEnabled) {
+                icon.textContent = "notifications_active";
+                text.textContent = "Disable Notifications";
+            } else {
+                icon.textContent = "notifications";
+                text.textContent = "Enable Notifications";
             }
         }
 
-        async function sendMessageViaAPI() {
+        function showNotification(title, message, type = "info") {
+            // Create notification object
+            const notification = {
+                id: Date.now().toString(),
+                title,
+                message,
+                type,
+                timer: null,
+                progressTimer: null
+            };
+            
+            // Add to queue if we've reached max active notifications
+            if (activeNotifications >= MAX_NOTIFICATIONS) {
+                notificationQueue.push(notification);
+                return;
+            }
+            
+            // Otherwise show immediately
+            displayNotification(notification);
+        }
+
+        function displayNotification(notification) {
+            activeNotifications++;
+            
+            const container = document.getElementById('notification-container');
+            const notificationElement = document.createElement('div');
+            notificationElement.className = `notification ${notification.type}`;
+            notificationElement.id = `notification-${notification.id}`;
+            
+            // Determine icon based on type
+            let icon = "info";
+            switch(notification.type) {
+                case "success":
+                    icon = "check_circle";
+                    break;
+                case "error":
+                    icon = "error";
+                    break;
+                case "warning":
+                    icon = "warning";
+                    break;
+                default:
+                    icon = "info";
+            }
+            
+            notificationElement.innerHTML = `
+                <span class="material-icons-round notification-icon">${icon}</span>
+                <div class="notification-content">
+                    <div class="notification-title">${notification.title}</div>
+                    <div class="notification-message">${notification.message}</div>
+                </div>
+                <button class="notification-close" aria-label="Close notification">
+                    <span class="material-icons-round">close</span>
+                </button>
+                <div class="notification-progress">
+                    <div class="notification-progress-bar"></div>
+                </div>
+            `;
+            
+            container.appendChild(notificationElement);
+            
+            // Trigger reflow to enable animation
+            void notificationElement.offsetWidth;
+            
+            // Show notification
+            notificationElement.classList.add('show');
+            
+            // Start progress bar animation
+            const progressBar = notificationElement.querySelector('.notification-progress-bar');
+            progressBar.style.transitionDuration = `${NOTIFICATION_TIMEOUT}ms`;
+            progressBar.style.transform = 'scaleX(0)';
+            
+            // Set timeout to auto-remove notification
+            notification.timer = setTimeout(() => {
+                hideNotification(notification.id);
+            }, NOTIFICATION_TIMEOUT);
+            
+            // Add click handler for close button
+            const closeButton = notificationElement.querySelector('.notification-close');
+            closeButton.addEventListener('click', () => {
+                clearTimeout(notification.timer);
+                hideNotification(notification.id);
+            });
+            
+            // Add click handler for notification (optional - could navigate to relevant content)
+            notificationElement.addEventListener('click', () => {
+                clearTimeout(notification.timer);
+                hideNotification(notification.id);
+            });
+        }
+
+        function hideNotification(id) {
+            const notificationElement = document.getElementById(`notification-${id}`);
+            if (!notificationElement) return;
+            
+            notificationElement.classList.remove('show');
+            notificationElement.classList.add('hide');
+            
+            // Remove from DOM after animation completes
+            setTimeout(() => {
+                notificationElement.remove();
+                activeNotifications--;
+                
+                // Show next notification in queue if any
+                if (notificationQueue.length > 0 && activeNotifications < MAX_NOTIFICATIONS) {
+                    const nextNotification = notificationQueue.shift();
+                    displayNotification(nextNotification);
+                }
+            }, 300);
+        }
+
+        async function sendMessage() {
             const messageInput = document.getElementById('message-input');
             const message = messageInput.value.trim();
 
@@ -599,13 +993,12 @@
                     body: JSON.stringify({ message })
                 });
 
-                const data = await response.json();
-                
                 if (response.ok) {
-                    addMessageToHistory(message);
                     messageInput.value = '';
-                    showSnackbar("Message sent via API", "success");
+                    updateCharacterCounter();
+                    showSnackbar("Message sent successfully", "success", 2000);
                 } else {
+                    const data = await response.json();
                     showSnackbar(data.error || "Failed to send message", "error");
                 }
             } catch (error) {
@@ -614,56 +1007,12 @@
             }
         }
 
-        async function triggerReload() {
-            try {
-                const response = await fetch('/reload', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                const data = await response.json();
-                
-                if (response.ok) {
-                    showSnackbar(`Reload triggered for ${data.clientsNotified} clients`, "success");
-                } else {
-                    showSnackbar(data.error || "Failed to trigger reload", "error");
-                }
-            } catch (error) {
-                console.error("Error triggering reload:", error);
-                showSnackbar("Failed to trigger reload", "error");
-            }
-        }
-
-        async function getMessages() {
-            try {
-                const response = await fetch('/messages', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                const data = await response.json();
-                
-                if (response.ok) {
-                    if (data.messages && data.messages.length > 0) {
-                        messageHistory = data.messages;
-                        renderMessages();
-                        showSnackbar(`Loaded ${data.messages.length} messages`, "success");
-                    } else {
-                        messageHistory = [];
-                        renderMessages();
-                        showSnackbar("No messages available", "warning");
-                    }
-                } else {
-                    showSnackbar(data.error || "Failed to get messages", "error");
-                }
-            } catch (error) {
-                console.error("Error getting messages:", error);
-                showSnackbar("Failed to get messages", "error");
-            }
+        function clearMessageInput() {
+            const messageInput = document.getElementById('message-input');
+            messageInput.value = '';
+            updateCharacterCounter();
+            messageInput.focus();
+            showSnackbar("Message cleared", "info", 1500);
         }
 
         function validateMessage(message) {
@@ -693,26 +1042,36 @@
         }
 
         function renderMessages() {
-            const messageScrollContainer = document.querySelector('.message-scroll-container');
+            const messageList = document.getElementById('message-list');
             
             if (messageHistory.length === 0) {
-                messageScrollContainer.innerHTML = '<div class="no-messages">No messages yet</div>';
+                messageList.innerHTML = '<div class="no-messages">No messages yet. Send one to get started!</div>';
                 return;
             }
             
             let messagesHTML = '';
-            messageHistory.forEach(msg => {
-                messagesHTML += `<div class="message-item">${msg}</div>`;
+            const messagesToShow = messageHistory.slice(0, 10); // Show first 10 messages
+            
+            messagesToShow.forEach((msg, index) => {
+                const timestamp = new Date().toLocaleTimeString();
+                messagesHTML += `
+                    <div class="message-item">
+                        <div>${msg}</div>
+                        <div class="message-meta">
+                            <span>#${messageHistory.length - index}</span>
+                            <span>${timestamp}</span>
+                        </div>
+                    </div>
+                `;
             });
             
-            messageScrollContainer.innerHTML = messagesHTML;
+            messageList.innerHTML = messagesHTML;
             
-            // Auto-scroll to top (since we're using column-reverse)
-            const messageList = document.getElementById('message-list');
+            // Auto-scroll to top
             messageList.scrollTop = 0;
         }
 
-        function showSnackbar(message, type = "success") {
+        function showSnackbar(message, type = "info", duration = 5000) {
             const snackbar = document.getElementById('snackbar');
             const snackbarMessage = document.getElementById('snackbar-message');
             const snackbarIcon = document.getElementById('snackbar-icon');
@@ -735,6 +1094,9 @@
                 case "error":
                     snackbarIcon.textContent = "error";
                     break;
+                case "info":
+                    snackbarIcon.textContent = "info";
+                    break;
                 default:
                     snackbarIcon.textContent = "info";
             }
@@ -743,13 +1105,13 @@
             snackbar.className = "snackbar show";
             snackbar.classList.add(type);
             
-            // Auto-hide after 5 seconds
+            // Auto-hide after duration
             snackbarTimeout = setTimeout(() => {
                 snackbar.classList.add('hide');
                 setTimeout(() => {
                     snackbar.className = "snackbar";
                 }, 300);
-            }, 5000);
+            }, duration);
         }
     </script>
 </body>

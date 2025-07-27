@@ -96,6 +96,7 @@ function handleWebSocket(req: Request): Response {
 
     socket.onopen = () => {
       console.log("WebSocket connection established");
+      clients.add(socket);
       socket.send(JSON.stringify({
         type: "connection",
         status: "connected",
@@ -116,7 +117,6 @@ function handleWebSocket(req: Request): Response {
       console.error("WebSocket error:", error);
     };
 
-    clients.add(socket);
     return response;
   } catch (error) {
     console.error("WebSocket upgrade failed:", error);
@@ -129,36 +129,6 @@ function handleWebSocket(req: Request): Response {
       HTTP_STATUS.INTERNAL_SERVER_ERROR
     );
   }
-}
-
-/**
- * Handles reload requests and notifies connected clients
- */
-async function handleReload(): Promise<Response> {
-  const activeClients = Array.from(clients).filter(
-    (client) => client.readyState === WebSocket.OPEN
-  );
-
-  const sendPromises = activeClients.map((client) => {
-    try {
-      return client.send(JSON.stringify({ 
-        type: "reload",
-        timestamp: new Date().toISOString()
-      }));
-    } catch (error) {
-      console.error("Failed to send reload message:", error);
-      return Promise.resolve();
-    }
-  });
-
-  await Promise.all(sendPromises);
-  
-  return createResponse({
-    success: true,
-    message: "Reload notification sent",
-    clientsNotified: activeClients.length,
-    timestamp: new Date().toISOString()
-  });
 }
 
 /**
@@ -208,8 +178,13 @@ async function handleSendMessage(req: Request): Promise<Response> {
       );
     }
 
-    messages.push(sanitizedMessage);
+    // Add message to history
+    messages.unshift(sanitizedMessage);
+    if (messages.length > 100) {
+      messages.pop();
+    }
 
+    // Broadcast to all connected WebSocket clients
     const activeClients = Array.from(clients).filter(
       (client) => client.readyState === WebSocket.OPEN
     );
@@ -256,7 +231,7 @@ function handleGetMessages(): Response {
   return createResponse({
     success: true,
     count: messages.length,
-    messages,
+    messages: messages.slice(0, 5),
     timestamp: new Date().toISOString()
   });
 }
@@ -321,8 +296,6 @@ async function handler(req: Request): Promise<Response> {
     }
 
     switch (true) {
-      case req.method === "GET" && pathname === "/reload":
-        return await handleReload();
       case req.method === "POST" && pathname === "/send-message":
         return await handleSendMessage(req);
       case req.method === "GET" && pathname === "/messages":
