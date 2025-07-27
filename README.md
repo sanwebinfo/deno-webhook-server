@@ -6,9 +6,7 @@ Deno Webhook Server is a real-time server application built using Deno. It suppo
 
 - **WebSocket Support**: Real-time communication with clients.
 - **Message Handling**: send and receive messages with validation.
-- **Reload Trigger**: Notifies all connected clients to reload.
-- **Authentication**: Secure endpoints with API key validation For Send and Reload Messages.
-- **Environment Configuration**: Uses `.env` file for Store API Key.
+- **Reload Trigger**: Notifies all connected clients to reload.  
 
 ## Prerequisites
 
@@ -21,12 +19,6 @@ Deno Webhook Server is a real-time server application built using Deno. It suppo
 ```sh
 git clone https://github.com/sanwebinfo/deno-webhook-server.git
 cd deno-webhook-server
-```
-
-- Create the `.env` File
-
-```env
-AUTH_KEY=your_secret_api_key
 ```
 
 - Install Dependencies
@@ -60,7 +52,6 @@ Description: Establish a WebSocket connection to receive real-time updates and m
 - URL: `/reload`
 - Method: GET
 - Description: Triggers a reload notification to all connected WebSocket clients.
-- Headers: Authorization: Bearer <AUTH_KEY>
 
 ### Send Message Endpoint
 
@@ -75,15 +66,12 @@ Description: Establish a WebSocket connection to receive real-time updates and m
 }
 ```
 
-- Headers: Authorization: Bearer <AUTH_KEY>
-
 ## Example curl Commands
 
 ```sh
 
 ## Send Message
 curl -X POST http://localhost:8000/send-message \
-     -H "Authorization: Bearer your_secret_api_key" \
      -H "Content-Type: application/json" \
      -d '{"message": "Hello, WebSocket!"}'
 ```
@@ -91,8 +79,7 @@ curl -X POST http://localhost:8000/send-message \
 ```sh
 
 ## Reload page
-curl -X GET http://localhost:8000/reload \
-     -H "Authorization: Bearer your_secret_api_key"
+curl -X GET http://localhost:8000/reload
 ```
 
 ```sh
